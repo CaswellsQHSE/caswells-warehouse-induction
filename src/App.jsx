@@ -281,6 +281,9 @@ function Assessment({ site, traineeName, managerName, onComplete }) {
 
   const handleSubmit = async () => {
     if (!allAnswered) return;
+    const finalScore = questions.filter((q, i) => answers[i] === q.correct).length;
+    const finalPct   = Math.round((finalScore / questions.length) * 100);
+    const finalPassed = finalPct >= 80;
     setSubmitted(true);
     setSending(true);
     const wrongItems = questions.map((q, i) => answers[i] !== q.correct ? `Q${i+1}: ${q.q}` : null).filter(Boolean);
@@ -291,8 +294,8 @@ function Assessment({ site, traineeName, managerName, onComplete }) {
         manager_name: managerName,
         site: isBillingham(site) ? 'Billingham (D R Caswell Ltd)' : 'Macclesfield (Cutler Cleaning Supplies Ltd)',
         module: 'Warehouse Induction — Picking & Putting Away',
-        score: `${score}/${questions.length} (${pct}%)`,
-        result: passed ? 'PASSED' : 'FAILED — review required',
+        score: `${finalScore}/${questions.length} (${finalPct}%)`,
+        result: finalPassed ? 'PASSED' : 'FAILED — review required',
         wrong_questions: wrongItems.length ? wrongItems.join('\n') : 'None',
         date: new Date().toLocaleDateString('en-GB'),
       }, EMAILJS.publicKey);
