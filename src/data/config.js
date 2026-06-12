@@ -15,9 +15,9 @@ export const BRAND = {
 };
 
 export const EMAILJS = {
-  serviceId:  'service_lphj3jw',
+  serviceId:  'service_nfepfe9',
   templateId: 'template_zefqq07',
-  publicKey:  '4rQoJPxmMeGSfuagE',
+  publicKey:  'g-6zlTJVXRbn7K7IC',
   notifyEmail: 'qhse@caswellsgroup.com',
 };
 
