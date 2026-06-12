@@ -370,8 +370,7 @@ function CompletionScreen({ traineeName, site }) {
       <div style={{ background: BRAND.white, borderRadius: 12, padding: '24px', maxWidth: 480, margin: '0 auto', textAlign: 'left', boxShadow: '0 2px 12px rgba(0,0,0,0.07)' }}>
         <p style={{ fontWeight: 700, color: BRAND.navy, marginBottom: 16 }}>Your next steps:</p>
         {[
-          'Sign the paper TGN-15 competency record with your manager.',
-          'Complete your manual handling training (TGN-01) — your manager will send this separately.',
+          'Complete your manual handling training (TGN-01) — this will be emailed to you separately.',
           'Speak to your manager before working unsupervised.',
         ].map((step, i) => (
           <div key={i} style={{ display: 'flex', gap: 14, alignItems: 'flex-start', marginBottom: 14, fontSize: 14, color: '#4A5568', lineHeight: 1.5 }}>

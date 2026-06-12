@@ -16,7 +16,7 @@ export const BRAND = {
 
 export const EMAILJS = {
   serviceId:  'service_lphj3jw',
-  templateId: 'template_k8rovlt',
+  templateId: 'template_zefqq07',
   publicKey:  '4rQoJPxmMeGSfuagE',
   notifyEmail: 'qhse@caswellsgroup.com',
 };
