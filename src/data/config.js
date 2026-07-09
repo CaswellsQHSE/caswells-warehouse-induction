@@ -14,12 +14,7 @@ export const BRAND = {
   logo: 'https://www.caswellsgroup.com/Content/Images/CG-full-colour-logo-RGB.svg',
 };
 
-export const EMAILJS = {
-  serviceId:  'service_nfepfe9',
-  templateId: 'template_zefqq07',
-  publicKey:  'g-6zlTJVXRbn7K7IC',
-  notifyEmail: 'qhse@caswellsgroup.com',
-};
+export const FLOW_URL = 'https://default7dc2103ac96a41759933d23f7fa9ad.9a.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/11/workflows/b1219ae80f74499385fb4949ba17002b/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=pKdT69HvxGrsgaAcJ0lAFrau3Z4MHks6J7teWiwuJdQ';
 
 export const RA_LINKS = {
   billingham:   'https://caswellsgroup.sharepoint.com/sites/CaswellsQHSEHub/Documents%20%20Warehouse%20Activities/01%20Risk%20Assessment/CAS03_Rev5.pdf',

@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
-import emailjs from '@emailjs/browser';
 import {
-  BRAND, EMAILJS, RA_LINKS, SECTIONS,
+  BRAND, FLOW_URL, RA_LINKS, SECTIONS,
   QUESTIONS_BILLINGHAM, QUESTIONS_MACCLESFIELD,
 } from './data/config';
 
@@ -288,17 +287,20 @@ function Assessment({ site, traineeName, managerName, onComplete }) {
     setSending(true);
     const wrongItems = questions.map((q, i) => answers[i] !== q.correct ? `Q${i+1}: ${q.q}` : null).filter(Boolean);
     try {
-      await emailjs.send(EMAILJS.serviceId, EMAILJS.templateId, {
-        to_email: EMAILJS.notifyEmail,
-        trainee_name: traineeName,
-        manager_name: managerName,
-        site: isBillingham(site) ? 'Billingham (D R Caswell Ltd)' : 'Macclesfield (Cutler Cleaning Supplies Ltd)',
-        module: 'Warehouse Induction — Picking & Putting Away',
-        score: `${finalScore}/${questions.length} (${finalPct}%)`,
-        result: finalPassed ? 'PASSED' : 'FAILED — review required',
-        wrong_questions: wrongItems.length ? wrongItems.join('\n') : 'None',
-        date: new Date().toLocaleDateString('en-GB'),
-      }, EMAILJS.publicKey);
+      const res = await fetch(FLOW_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          trainee_name: traineeName,
+          manager_name: managerName,
+          site: isBillingham(site) ? 'Billingham (D R Caswell Ltd)' : 'Macclesfield (Cutler Cleaning Supplies Ltd)',
+          score: `${finalScore}/${questions.length} (${finalPct}%)`,
+          result: finalPassed ? 'PASSED' : 'FAILED — review required',
+          wrong_questions: wrongItems.length ? wrongItems.join('\n') : 'None',
+          date: new Date().toLocaleDateString('en-GB'),
+        })
+      });
+      if (!res.ok) throw new Error(`Flow responded ${res.status}`);
     } catch(e) {
       setSendError('Result could not be sent automatically. Please inform your manager of your score.');
     }
