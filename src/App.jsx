@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   BRAND, FLOW_URL, RA_LINKS, SECTIONS,
   QUESTIONS_BILLINGHAM, QUESTIONS_MACCLESFIELD,
@@ -266,7 +266,7 @@ function SectionContent({ section, onComplete }) {
 }
 
 // ─── Assessment ───────────────────────────────────────────────────────────────
-function Assessment({ site, traineeName, managerName, onComplete }) {
+function Assessment({ site, traineeName, managerName, inviteToken, onComplete }) {
   const questions = isBillingham(site) ? QUESTIONS_BILLINGHAM : QUESTIONS_MACCLESFIELD;
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
@@ -298,6 +298,7 @@ function Assessment({ site, traineeName, managerName, onComplete }) {
           result: finalPassed ? 'PASSED' : 'FAILED — review required',
           wrong_questions: wrongItems.length ? wrongItems.join('\n') : 'None',
           date: new Date().toLocaleDateString('en-GB'),
+          inviteToken,
         })
       });
       if (!res.ok) throw new Error(`Flow responded ${res.status}`);
@@ -395,7 +396,13 @@ export default function App() {
   const [traineeName, setTraineeName] = useState('');
   const [managerName, setManagerName] = useState('');
   const [sectionIdx, setSectionIdx]   = useState(0);
+  const [inviteToken, setInviteToken] = useState('');
   const topRef = useRef(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setInviteToken(params.get('token') || '');
+  }, []);
 
   const activeSections = SECTIONS.filter(s => !s.billinghamOnly || isBillingham(site));
   const totalSteps = activeSections.length + 1;
@@ -435,7 +442,7 @@ export default function App() {
         {phase === 'site'     && <SiteSelector onSelect={s => { setSite(s); setPhase('name'); }} />}
         {phase === 'name'     && <NameEntry site={site} onStart={(n, m) => { setTraineeName(n); setManagerName(m); setPhase('training'); scrollTop(); }} />}
         {phase === 'training' && sectionIdx < activeSections.length && renderSection(activeSections[sectionIdx])}
-        {phase === 'training' && sectionIdx === activeSections.length && <Assessment site={site} traineeName={traineeName} managerName={managerName} onComplete={() => { setPhase('complete'); scrollTop(); }} />}
+        {phase === 'training' && sectionIdx === activeSections.length && <Assessment site={site} traineeName={traineeName} managerName={managerName} inviteToken={inviteToken} onComplete={() => { setPhase('complete'); scrollTop(); }} />}
         {phase === 'complete' && <CompletionScreen traineeName={traineeName} site={site} />}
       </main>
 
